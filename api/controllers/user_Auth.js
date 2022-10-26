@@ -3,7 +3,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 const User = require("../models/user");
-const FuelShed = require("../models/fuelShed");
+const FuelShed = require("../models/fuel_Station");
 
 //method: user registeration
 //[POST]http://localhost:4000/api/auth/register            

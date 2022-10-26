@@ -10,7 +10,7 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
-  NIC: {
+  Nic: {
     type: String,
     required: true,
   },

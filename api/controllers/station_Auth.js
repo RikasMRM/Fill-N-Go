@@ -2,7 +2,7 @@ const { validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-const FuelShed = require("../models/fuelShed");
+const FuelShed = require("../models/fuel_Station");
 
 //method: station authentication
 //[POST]http://localhost:4000/api/auth/shed-owner/register        
@@ -18,7 +18,7 @@ exports.signup = async (req, res, next) => {
 
   const stationName = req.body.stationName;
   const adminName = req.body.adminName;
-  const NIC = req.body.NIC;
+  const Nic = req.body.Nic;
   const email = req.body.email;
   const password = req.body.password;
 
@@ -28,7 +28,7 @@ exports.signup = async (req, res, next) => {
     const fuelShed = new FuelShed({
       stationName,
       adminName,
-      NIC,
+      Nic,
       email,
       password: hashedPw,
     });

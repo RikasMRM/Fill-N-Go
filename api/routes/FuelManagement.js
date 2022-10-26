@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const fuelManager = require("../controllers/fuelManagement");
+const fuelManager = require("../controllers/fuel_Management");
 
 router.post("/", fuelManager.getStationDetails);
 router.post("/search-station", fuelManager.getIdByStationName);

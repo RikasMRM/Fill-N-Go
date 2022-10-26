@@ -1,5 +1,5 @@
 const User = require("../models/user");
-const FuelShed = require("../models/fuelShed");
+const FuelShed = require("../models/fuel_Station");
 
 //method: station details by stationId
 //[GET]http://localhost:4000/api/fuel-station/
