@@ -1,0 +1,455 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".StationDetails">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="-30dp">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/background_white"
+            android:orientation="vertical">
+
+
+            <ImageView
+                android:id="@+id/searchBtn"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_marginTop="20dp"
+                app:srcCompat="@drawable/logo" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center_horizontal"
+                android:text="Details of the Station"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:gravity="center_horizontal"
+                android:text="Petrol Queue"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
+
+                <TableRow
+                    android:background="@color/Primary_Blue"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Vehicle Type" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Queue Length" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Waiting TIme" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Join" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Exit" />
+
+                </TableRow>
+
+                <TableRow
+                    android:background="@color/background_white"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Car" />
+
+                    <TextView
+                        android:id="@+id/p_car_ql"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="5"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/p_car_wt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="01.30" />
+
+                    <Button
+                        android:id="@+id/petrol_car_join"
+                        android:layout_width="70dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="2px"
+                        android:layout_marginLeft="15px"
+                        android:layout_marginTop="15px"
+                        android:layout_marginEnd="10px"
+                        android:backgroundTint="@color/white"
+                        android:padding="20px"
+                        android:paddingTop="20px"
+                        android:paddingBottom="20px"
+                        android:text="Join"
+                        android:textAllCaps="false"
+                        android:textColor="#008080"
+                        android:textSize="18sp" />
+
+                    <Button
+                        android:id="@+id/petrol_car_exit"
+                        android:layout_width="70dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="2px"
+                        android:layout_marginLeft="15px"
+                        android:layout_marginTop="15px"
+                        android:layout_marginEnd="10px"
+                        android:backgroundTint="@color/white"
+                        android:padding="20px"
+                        android:paddingTop="20px"
+                        android:paddingBottom="20px"
+                        android:text="Exit"
+                        android:textAllCaps="false"
+                        android:textColor="#b84351"
+                        android:textSize="18sp" />
+                </TableRow>
+
+                <TableRow
+                    android:background="@color/background_white"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Bike" />
+
+                    <TextView
+                        android:id="@+id/p_bike_ql"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="8"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/p_bike_wt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="00.30" />
+
+                    <Button
+                        android:id="@+id/petrol_bike_join"
+                        android:layout_width="70dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="2px"
+                        android:layout_marginLeft="15px"
+                        android:layout_marginTop="15px"
+                        android:layout_marginEnd="10px"
+                        android:backgroundTint="@color/white"
+                        android:padding="20px"
+                        android:paddingTop="20px"
+                        android:paddingBottom="20px"
+                        android:text="Join"
+                        android:textAllCaps="false"
+                        android:textColor="#008080"
+                        android:textSize="18sp" />
+
+                    <Button
+                        android:id="@+id/petrol_bike_exit"
+                        android:layout_width="70dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="2px"
+                        android:layout_marginLeft="15px"
+                        android:layout_marginTop="15px"
+                        android:layout_marginEnd="10px"
+                        android:backgroundTint="@color/white"
+                        android:padding="20px"
+                        android:paddingTop="20px"
+                        android:paddingBottom="20px"
+                        android:text="Exit"
+                        android:textAllCaps="false"
+                        android:textColor="#b84351"
+                        android:textSize="18sp" />
+                </TableRow>
+
+                <TableRow
+                    android:background="@color/background_white"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Threewheel" />
+
+                    <TextView
+                        android:id="@+id/p_threewheeler_ql"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="1"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/p_threewheeler_wt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="00.20" />
+
+                    <Button
+                        android:id="@+id/petrol_3wheel_join"
+                        android:layout_width="70dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="2px"
+                        android:layout_marginLeft="15px"
+                        android:layout_marginTop="15px"
+                        android:layout_marginEnd="10px"
+                        android:backgroundTint="@color/white"
+                        android:padding="20px"
+                        android:paddingTop="20px"
+                        android:paddingBottom="20px"
+                        android:text="Join"
+                        android:textAllCaps="false"
+                        android:textColor="#008080"
+                        android:textSize="18sp" />
+
+                    <Button
+                        android:id="@+id/petrol_3wheel_exit"
+                        android:layout_width="70dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="2px"
+                        android:layout_marginLeft="15px"
+                        android:layout_marginTop="15px"
+                        android:layout_marginEnd="10px"
+                        android:backgroundTint="@color/white"
+                        android:padding="20px"
+                        android:paddingTop="20px"
+                        android:paddingBottom="20px"
+                        android:text="Exit"
+                        android:textAllCaps="false"
+                        android:textColor="#b84351"
+                        android:textSize="18sp" />
+                </TableRow>
+
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center_horizontal"
+                    android:text="Diesel Queue"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+
+                <TableRow
+                    android:background="@color/Primary_Blue"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Vehicle Type" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Queue Length" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Waiting TIme" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Join" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Exit" />
+
+                </TableRow>
+
+
+                <TableRow
+                    android:background="@color/background_white"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Bus" />
+
+                    <TextView
+                        android:id="@+id/diesel_bus_ql"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="8"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/diesel_bus_wt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="00.30" />
+
+                    <Button
+                        android:id="@+id/diesel_bus_join"
+                        android:layout_width="70dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="2px"
+                        android:layout_marginLeft="15px"
+                        android:layout_marginTop="15px"
+                        android:layout_marginEnd="10px"
+                        android:backgroundTint="@color/white"
+                        android:padding="20px"
+                        android:paddingTop="20px"
+                        android:paddingBottom="20px"
+                        android:text="Join"
+                        android:textAllCaps="false"
+                        android:textColor="#008080"
+                        android:textSize="18sp" />
+
+                    <Button
+                        android:id="@+id/diesel_bus_exit"
+                        android:layout_width="70dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="2px"
+                        android:layout_marginLeft="15px"
+                        android:layout_marginTop="15px"
+                        android:layout_marginEnd="10px"
+                        android:backgroundTint="@color/white"
+                        android:padding="20px"
+                        android:paddingTop="20px"
+                        android:paddingBottom="20px"
+                        android:text="Exit"
+                        android:textAllCaps="false"
+                        android:textColor="#b84351"
+                        android:textSize="18sp" />
+                </TableRow>
+
+                <TableRow
+                    android:background="@color/background_white"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Threewheel" />
+
+                    <TextView
+                        android:id="@+id/diesel_threewheeler_ql"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="1"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/diesel_threewheeler_wt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="00.20" />
+
+                    <Button
+                        android:id="@+id/diesel_3wheel_join"
+                        android:layout_width="70dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="2px"
+                        android:layout_marginLeft="15px"
+                        android:layout_marginTop="15px"
+                        android:layout_marginEnd="10px"
+                        android:backgroundTint="@color/white"
+                        android:padding="20px"
+                        android:paddingTop="20px"
+                        android:paddingBottom="20px"
+                        android:text="Join"
+                        android:textAllCaps="false"
+                        android:textColor="#008080"
+                        android:textSize="18sp" />
+
+                    <Button
+                        android:id="@+id/diesel_3wheel_exit"
+                        android:layout_width="70dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="2px"
+                        android:layout_marginLeft="15px"
+                        android:layout_marginTop="15px"
+                        android:layout_marginEnd="10px"
+                        android:backgroundTint="@color/white"
+                        android:padding="20px"
+                        android:paddingTop="20px"
+                        android:paddingBottom="20px"
+                        android:text="Exit"
+                        android:textAllCaps="false"
+                        android:textColor="#b84351"
+                        android:textSize="18sp" />
+                </TableRow>
+            </TableLayout>
+
+
+            <ProgressBar
+                android:id="@+id/progress_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:visibility="gone" />
+
+
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
