@@ -4,8 +4,8 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 
 const authRoutes = require("./routes/auth");
-const shedOwnerAuthRoutes = require("./routes/stationAuth");
-const fuelStationRoutes = require("./routes/FuelManagement");
+const shedOwnerAuthRoutes = require("./routes/station_Auth");
+const fuelStationRoutes = require("./routes/Fuel_M");
 require("dotenv").config();
 
 const app = express();
