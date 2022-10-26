@@ -2,7 +2,7 @@ const User = require("../models/user");
 const FuelShed = require("../models/fuelShed");
 
 //method: station details by stationId
-//[GET]https://eadfuelapp.herokuapp.com/api/fuel-station/
+//[GET]http://localhost:4000/api/fuel-station/
 const getStationDetails = async (req, response) => {
   const station_id = req.body.station_id;
 
@@ -106,7 +106,7 @@ const getIdByStationName = async (req, response) => {
 };
 
 //method: Search function of station by id
-//[GET]https://eadfuelapp.herokuapp.com/api/fuel-station/search-details     
+//[GET]http://localhost:4000/api/fuel-station/search-details     
 const getDetailsOfSearchedStation = async (req, response) => {
   const searched_station_id = req.body.station_id;
 
@@ -127,7 +127,7 @@ const getDetailsOfSearchedStation = async (req, response) => {
   }
 };
 //method: joining user to the correct queue
-//[POST]https://eadfuelapp.herokuapp.com/api/fuel-station/add-to-queue
+//[POST]http://localhost:4000/api/fuel-station/add-to-queue
 const addUserToTheQueue = async (req, response) => {
   //find the user who is joing the queue
   const user_id = req.body.user_id;
@@ -193,7 +193,7 @@ const addUserToTheQueue = async (req, response) => {
   }
 };
 //method: get the lenght of queue
-//[GET]https://eadfuelapp.herokuapp.com/api/fuel-station/q-lengths
+//[GET]http://localhost:4000/api/fuel-station/q-lengths
 const getQueueLength = async (req, response) => {
   //find the station
   const station_id = req.body.station_id;
@@ -222,7 +222,7 @@ const getQueueLength = async (req, response) => {
   }
 };
 //method: waiting time of a queue
-//[GET]https://eadfuelapp.herokuapp.com/api/fuel-station/q-waiting-times    
+//[GET]http://localhost:4000/api/fuel-station/q-waiting-times    
 const getWaitingTime = async (req, response) => {
   const station_id = req.body.station_id;
   let station;
@@ -272,7 +272,7 @@ const getWaitingTime = async (req, response) => {
   }
 };
 //method: get fuel avaiablity of each fuel type of the fuel station
-//[GET]https://eadfuelapp.herokuapp.com/api/fuel-station/fuel-avaiability
+//[GET]http://localhost:4000/api/fuel-station/fuel-avaiability
 const getFuelAvailability = async (req, response) => {
   const station_id = req.body.station_id;
   let station;
@@ -301,7 +301,7 @@ const getFuelAvailability = async (req, response) => {
   }
 };
 //method: remove an user from a queue
-//POST]https://eadfuelapp.herokuapp.com/api/fuel-station/exit-queue        
+//POST]http://localhost:4000/api/fuel-station/exit-queue        
 const exitUserFromQueue = async (req, response) => {
   //find the user who is going to join the queue, the station
   const user_id = req.body.user_id;
@@ -385,7 +385,7 @@ const exitUserFromQueue = async (req, response) => {
   }
 };
 //method: exit the station after fueling
-//[POST]https://eadfuelapp.herokuapp.com/api/fuel-station/exit-after-pump
+//[POST]http://localhost:4000/api/fuel-station/exit-after-pump
 const exitTheQueue = async (req, response) => {
   const station_id = req.body.station_id;
   const fuelType = req.body.fuel_type; // Diesel or Petrol
