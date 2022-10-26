@@ -40,13 +40,13 @@ const userSchema = new Schema({
     finishingTime: {
       type: String,
     },
-    busQueue: [
+    busQ: [
       {
         type: Schema.Types.ObjectId,
         ref: "User",
       },
     ],
-    threeWheelerQueue: [
+    TukTukQ: [
       {
         type: Schema.Types.ObjectId,
         ref: "User",
@@ -67,19 +67,19 @@ const userSchema = new Schema({
     finishingTime: {
       type: String,
     },
-    carQueue: [
+    carQ: [
       {
         type: Schema.Types.ObjectId,
         ref: "User",
       },
     ],
-    bikeQueue: [
+    bikeQ: [
       {
         type: Schema.Types.ObjectId,
         ref: "User",
       },
     ],
-    threeWheelerQueue: [
+    TukTukQ: [
       {
         type: Schema.Types.ObjectId,
         ref: "User",

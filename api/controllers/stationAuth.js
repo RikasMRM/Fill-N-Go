@@ -4,6 +4,8 @@ const jwt = require("jsonwebtoken");
 
 const FuelShed = require("../models/fuelShed");
 
+//method: station authentication
+//[POST]https://eadfuelapp.herokuapp.com/api/auth/shed-owner/register        
 exports.signup = async (req, res, next) => {
   console.log("req", req.body);
   const errors = validationResult(req);

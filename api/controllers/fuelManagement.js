@@ -1,17 +1,18 @@
 const User = require("../models/user");
 const FuelShed = require("../models/fuelShed");
 
-//method: get station details by stationId
-const getFuelStationDetails = async (req, response) => {
+//method: station details by stationId
+//[GET]https://eadfuelapp.herokuapp.com/api/fuel-station/
+const getStationDetails = async (req, response) => {
   const station_id = req.body.station_id;
 
   try {
     const fuelShed = await FuelShed.findById(station_id)
-      .populate("Diesel.busQueue")
-      .populate("Diesel.threeWheelerQueue")
-      .populate("Petrol.carQueue")
-      .populate("Petrol.bikeQueue")
-      .populate("Petrol.threeWheelerQueue");
+      .populate("Diesel.busQ")
+      .populate("Diesel.TukTukQ")
+      .populate("Petrol.carQ")
+      .populate("Petrol.bikeQ")
+      .populate("Petrol.TukTukQ");
     response.status(200).json({
       success: true,
       message: "GET station details",
@@ -22,21 +23,22 @@ const getFuelStationDetails = async (req, response) => {
   }
 };
 
-//method: update fuel details of a particular station
-const updateFuelStationDetails = async (req, response) => {
+//method: station wise fuel status
+//[POST]http://localhost:4000/api/fuel-station/update
+const updateStationDetails = async (req, response) => {
   station_id = req.body.station_id;
   try {
     //find the station
     const station = await FuelShed.findById(station_id)
-      .populate("Diesel.busQueue")
-      .populate("Diesel.threeWheelerQueue")
-      .populate("Petrol.carQueue")
-      .populate("Petrol.bikeQueue")
-      .populate("Petrol.threeWheelerQueue");
+      .populate("Diesel.busQ")
+      .populate("Diesel.TukTukQ")
+      .populate("Petrol.carQ")
+      .populate("Petrol.bikeQ")
+      .populate("Petrol.TukTukQ");
 
-    if (!station) res.status(404).send("data is not found");
+    if (!station) res.status(404).send("data not found");
     else {
-      //update total avaiable fuel quantity
+      //update the total avaiable fuel quantity
       let newDieselTotal =
         station.Diesel.avaiableTotalFuelAmount +
         req.body.diesel_arrived_quantity;
@@ -54,7 +56,7 @@ const updateFuelStationDetails = async (req, response) => {
       station.Petrol.arrivedQuantity = req.body.petrol_arrived_quantity;
       station.Petrol.finishingTime = req.body.petrol_finishing_time;
 
-      //save updated station details
+      //updated station details
       station
         .save()
         .then((res) => {
@@ -65,17 +67,17 @@ const updateFuelStationDetails = async (req, response) => {
           });
         })
         .catch((err) => {
-          res.status(400).send(err, "Update not possible");
+          res.status(400).send(err, "not Updated");
         });
     }
   } catch (err) {
-    console.log(err, "couldn't update fuel station details");
+    console.log(err, "couldn't update the station details");
   }
 };
 
-//method: find id of searched stationName
-const getIdByFuelStationName = async (req, response) => {
-  const station_name = req.body.station_name; //new RegExp('^' + station_name + '$', "i"
+//method: find stationName by id 
+const getIdByStationName = async (req, response) => {
+  const station_name = req.body.station_name;
   try {
     FuelShed.find(
       { stationName: new RegExp("^" + station_name + "$", "i") },
@@ -92,28 +94,29 @@ const getIdByFuelStationName = async (req, response) => {
           } else {
             response.status(404).json({
               success: false,
-              message: "no matching result to be found",
+              message: "nothing found",
             });
           }
         }
       }
     );
   } catch (err) {
-    console.log(err, "no matching result found for searched fuel station name");
+    console.log(err, "nothing found for searched station");
   }
 };
 
-//method: Search fuel station (get all details of searched StationId)
-const getDetailsOfSearchedFuelStation = async (req, response) => {
+//method: Search function of station by id
+//[GET]https://eadfuelapp.herokuapp.com/api/fuel-station/search-details     
+const getDetailsOfSearchedStation = async (req, response) => {
   const searched_station_id = req.body.station_id;
 
   try {
     const fuelShed = await FuelShed.findById(searched_station_id)
-      .populate("Diesel.busQueue")
-      .populate("Diesel.threeWheelerQueue")
-      .populate("Petrol.carQueue")
-      .populate("Petrol.bikeQueue")
-      .populate("Petrol.threeWheelerQueue");
+      .populate("Diesel.busQ")
+      .populate("Diesel.TukTukQ")
+      .populate("Petrol.carQ")
+      .populate("Petrol.bikeQ")
+      .populate("Petrol.TukTukQ");
     response.status(200).json({
       success: true,
       message: "GET station details",
@@ -123,9 +126,10 @@ const getDetailsOfSearchedFuelStation = async (req, response) => {
     console.log(err);
   }
 };
-//method: add user to the correct queue(ex: stationId.petrol.carQueue.push(user))
-const addUserToFuelQueue = async (req, response) => {
-  //find the user who is going to join the queue, the station
+//method: joining user to the correct queue
+//[POST]https://eadfuelapp.herokuapp.com/api/fuel-station/add-to-queue
+const addUserToTheQueue = async (req, response) => {
+  //find the user who is joing the queue
   const user_id = req.body.user_id;
   const station_id = req.body.station_id;
   let user, station;
@@ -143,18 +147,18 @@ const addUserToFuelQueue = async (req, response) => {
   await user.save();
 
   //find the correct category to which user belongs to & add user to the queue
-  const fuelType = req.body.fuel_type; // 'Diesel' or 'Petrol'
-  const vehicalType = req.body.vehical_type; // 'bus' / 'threeWheeler' / 'car' / 'bike'
+  const fuelType = req.body.fuel_type; // fuel type : Diesel or Petrol
+  const vehicalType = req.body.vehical_type; // vehical type : bus or TukTuk or car or bike
   let queueType;
   console.log("fuel, vehical: ", fuelType, vehicalType);
 
   if (fuelType === "Diesel") {
     switch (vehicalType) {
       case "bus":
-        station.Diesel.busQueue.push(user);
+        station.Diesel.busQ.push(user);
         break;
-      case "threeWheeler":
-        station.Diesel.threeWheelerQueue.push(user);
+      case "TukTuk":
+        station.Diesel.TukTukQ.push(user);
         break;
       default:
         break;
@@ -162,51 +166,52 @@ const addUserToFuelQueue = async (req, response) => {
   } else if (fuelType === "Petrol") {
     switch (vehicalType) {
       case "car":
-        station.Petrol.carQueue.push(user);
+        station.Petrol.carQ.push(user);
         break;
-      case "threeWheeler":
-        station.Petrol.threeWheelerQueue.push(user);
+      case "TukTuk":
+        station.Petrol.TukTukQ.push(user);
         break;
       case "bike":
-        station.Petrol.bikeQueue.push(user);
+        station.Petrol.bikeQ.push(user);
       default:
         break;
     }
   }
 
-  //save the modified station details
+  //Modyfying station details
   try {
     station.save().then((res) => {
-      console.log("user added to queue successfully");
+      console.log("user added to queue");
       response.status(200).json({
         success: true,
-        message: "user added to correct queue successfully",
+        message: "user added to queue",
         updatedStation: station,
       });
     });
   } catch (err) {
-    console.log(err, "couldn't add user to the fuel queue");
+    console.log(err, "couldn't add the user to the queue");
   }
 };
-//method: get the lenght of each queue (lenght of queue array)
-const getFuelQueueLengths = async (req, response) => {
+//method: get the lenght of queue
+//[GET]https://eadfuelapp.herokuapp.com/api/fuel-station/q-lengths
+const getQueueLength = async (req, response) => {
   //find the station
   const station_id = req.body.station_id;
   let station;
   try {
     station = await FuelShed.findById(station_id)
-      .populate("Diesel.busQueue")
-      .populate("Diesel.threeWheelerQueue")
-      .populate("Petrol.carQueue")
-      .populate("Petrol.bikeQueue")
-      .populate("Petrol.threeWheelerQueue");
-    //calculate lengths of each fuel queue
+      .populate("Diesel.busQ")
+      .populate("Diesel.TukTukQ")
+      .populate("Petrol.carQ")
+      .populate("Petrol.bikeQ")
+      .populate("Petrol.TukTukQ");
+    //length of the fuel queue 
     let queueLengths = {
-      diesel_bus_queue_length: station.Diesel.busQueue.length,
-      diesel_threeWheeler_queue_length: station.Diesel.threeWheelerQueue.length,
-      petrol_car_queue_length: station.Petrol.carQueue.length,
-      petrol_bike_queue_length: station.Petrol.bikeQueue.length,
-      petrol_threeWheeler_queue_length: station.Petrol.threeWheelerQueue.length,
+      diesel_bus_queue_length: station.Diesel.busQ.length,
+      diesel_TukTuk_queue_length: station.Diesel.TukTukQ.length,
+      petrol_car_queue_length: station.Petrol.carQ.length,
+      petrol_bike_queue_length: station.Petrol.bikeQ.length,
+      petrol_TukTuk_queue_length: station.Petrol.TukTukQ.length,
     };
     response.status(200).json({
       success: true,
@@ -216,20 +221,21 @@ const getFuelQueueLengths = async (req, response) => {
     console.log(error, "couldn't retrieve fuel queue lengths");
   }
 };
-//method: get waiting time of each queue (ex: stationId.petrol.carQueue[0].arrivalTime)
-const getQueueWaitingTimes = async (req, response) => {
+//method: waiting time of a queue
+//[GET]https://eadfuelapp.herokuapp.com/api/fuel-station/q-waiting-times    
+const getWaitingTime = async (req, response) => {
   const station_id = req.body.station_id;
   let station;
   try {
     //find the station
     station = await FuelShed.findById(station_id)
-      .populate("Diesel.busQueue")
-      .populate("Diesel.threeWheelerQueue")
-      .populate("Petrol.carQueue")
-      .populate("Petrol.bikeQueue")
-      .populate("Petrol.threeWheelerQueue");
+      .populate("Diesel.busQ")
+      .populate("Diesel.TukTukQ")
+      .populate("Petrol.carQ")
+      .populate("Petrol.bikeQ")
+      .populate("Petrol.TukTukQ");
 
-    //find waiting times of each queue (the arrival time of the person who is about to obtain fuel(who is at the front of the queue))
+    //find waiting times a queue
     let t = new Date();
     let currentTime =
       t.getHours() + ":" + t.getMinutes() + ":" + t.getSeconds();
@@ -237,24 +243,24 @@ const getQueueWaitingTimes = async (req, response) => {
     let waitingTimes = {
       currentTime: currentTime,
       w_time_for_diesel_bus_queue:
-        station.Diesel.busQueue.length > 0
-          ? station.Diesel.busQueue[0].joinedTime
+        station.Diesel.busQ.length > 0
+          ? station.Diesel.busQ[0].joinedTime
           : "00:00:00",
-      w_time_for_diesel_threewheeler_queue:
-        station.Diesel.threeWheelerQueue.length > 0
-          ? station.Diesel.threeWheelerQueue[0].joinedTime
+      w_time_for_diesel_TukTuk_queue:
+        station.Diesel.TukTukQ.length > 0
+          ? station.Diesel.TukTukQ[0].joinedTime
           : "00:00:00",
       w_time_for_petrol_car_queue:
-        station.Petrol.carQueue.length > 0
-          ? station.Petrol.carQueue[0].joinedTime
+        station.Petrol.carQ.length > 0
+          ? station.Petrol.carQ[0].joinedTime
           : "00:00:00",
       w_time_for_petrol_bike_queue:
-        station.Petrol.bikeQueue.length > 0
-          ? station.Petrol.bikeQueue[0].joinedTime
+        station.Petrol.bikeQ.length > 0
+          ? station.Petrol.bikeQ[0].joinedTime
           : "00:00:00",
-      w_time_for_petrol_threewheeler_queue:
-        station.Petrol.threeWheelerQueue.length > 0
-          ? station.Petrol.threeWheelerQueue[0].joinedTime
+      w_time_for_petrol_TukTuk_queue:
+        station.Petrol.TukTukQ.length > 0
+          ? station.Petrol.TukTukQ[0].joinedTime
           : "00:00:00",
     };
     response.status(200).json({
@@ -262,23 +268,24 @@ const getQueueWaitingTimes = async (req, response) => {
       waitingTimes,
     });
   } catch (err) {
-    console.log(err, "couldn't retrieve fuel queue waiting times");
+    console.log(err, "couldn't get back the waiting time");
   }
 };
-//method: get fuel avaiablity of each fuel type of the respective fuel station
+//method: get fuel avaiablity of each fuel type of the fuel station
+//[GET]https://eadfuelapp.herokuapp.com/api/fuel-station/fuel-avaiability
 const getFuelAvailability = async (req, response) => {
   const station_id = req.body.station_id;
   let station;
   try {
     //find the station
     station = await FuelShed.findById(station_id)
-      .populate("Diesel.busQueue")
-      .populate("Diesel.threeWheelerQueue")
-      .populate("Petrol.carQueue")
-      .populate("Petrol.bikeQueue")
-      .populate("Petrol.threeWheelerQueue");
+      .populate("Diesel.busQ")
+      .populate("Diesel.TukTukQ")
+      .populate("Petrol.carQ")
+      .populate("Petrol.bikeQ")
+      .populate("Petrol.TukTukQ");
 
-    //check availability of each fuel type
+    //availability of fuel type
     let petrolStatus =
       station.Petrol.avaiableTotalFuelAmount > 0 ? true : false;
     let dieselStatus =
@@ -293,8 +300,9 @@ const getFuelAvailability = async (req, response) => {
     console.log(err, "couldn't fetch fuel avaiability details");
   }
 };
-//method: remove user from correct queue
-const exitUserFromFuelQueue = async (req, response) => {
+//method: remove an user from a queue
+//POST]https://eadfuelapp.herokuapp.com/api/fuel-station/exit-queue        
+const exitUserFromQueue = async (req, response) => {
   //find the user who is going to join the queue, the station
   const user_id = req.body.user_id;
   const station_id = req.body.station_id;
@@ -306,32 +314,32 @@ const exitUserFromFuelQueue = async (req, response) => {
     console.log(error, "matching user or station not found");
   }
 
-  //track the time that user exit the queue
+  //track the time 
   let t = new Date();
   let currentTime = t.getHours() + ":" + t.getMinutes() + ":" + t.getSeconds();
   user.exitTime = currentTime;
   await user.save();
 
   //find the correct category to which user belongs to & add user to the queue
-  const fuelType = req.body.fuel_type; // 'Diesel' or 'Petrol'
-  const vehicalType = req.body.vehical_type; // 'bus' / 'threeWheeler' / 'car' / 'bike'
+  const fuelType = req.body.fuel_type; // Diesel or Petrol
+  const vehicalType = req.body.vehical_type; // bus or TukTuk or car or bike
   let index;
 
   if (fuelType === "Diesel") {
     switch (vehicalType) {
       case "bus":
-        //find where in the bus-queue this user is
-        index = station.Diesel.busQueue.findIndex(
+        //find user from a bus-queue
+        index = station.Diesel.busQ.findIndex(
           (item) => item._id.toString() === user._id.toString()
         );
-        station.Diesel.busQueue.splice(index, 1);
+        station.Diesel.busQ.splice(index, 1);
         break;
-      case "threeWheeler":
-        //find where in the 3wheeler-queue this user is
-        index = station.Diesel.threeWheelerQueue.findIndex(
+      case "TukTuk":
+        //find user from a tuktuk-queue
+        index = station.Diesel.TukTukQ.findIndex(
           (item) => item._id.toString() === user._id.toString()
         );
-        station.Diesel.threeWheelerQueue.splice(index, 1);
+        station.Diesel.TukTukQ.splice(index, 1);
         break;
       default:
         break;
@@ -340,30 +348,30 @@ const exitUserFromFuelQueue = async (req, response) => {
     console.log("inside else if");
     switch (vehicalType) {
       case "car":
-        //find where in the car-queue this user is
-        index = station.Petrol.carQueue.findIndex(
+        //find user from a car-queue
+        index = station.Petrol.carQ.findIndex(
           (item) => item._id.toString() === user._id.toString()
         );
-        station.Petrol.carQueue.splice(index, 1);
+        station.Petrol.carQ.splice(index, 1);
         break;
-      case "threeWheeler":
-        //find where in the 3wheeler-queue this user is
-        index = station.Petrol.threeWheelerQueue.findIndex(
+      case "TukTuk":
+        //find user from a tuktuk-queue
+        index = station.Petrol.TukTukQ.findIndex(
           (item) => item._id.toString() === user._id.toString()
         );
-        station.Petrol.threeWheelerQueue.splice(index, 1);
+        station.Petrol.TukTukQ.splice(index, 1);
         break;
       case "bike":
-        //find where in the bike-queue this user is
-        index = station.Petrol.bikeQueue.findIndex(
+        //find user from a bike-queue
+        index = station.Petrol.bikeQ.findIndex(
           (item) => item._id.toString() === user._id.toString()
         );
-        station.Petrol.bikeQueue.splice(index, 1);
+        station.Petrol.bikeQ.splice(index, 1);
       default:
         break;
     }
   }
-  //save the modified station details
+  //modified station detail
   try {
     station.save().then((res) => {
       response.status(200).json({
@@ -376,17 +384,18 @@ const exitUserFromFuelQueue = async (req, response) => {
     console.log(err, "couldn't exit the user from fuel queue");
   }
 };
-//method: exit after fueling (update totalAvailableFuelQuantity after every person obtain fuel)
-const exitAfterFueling = async (req, response) => {
+//method: exit the station after fueling
+//[POST]https://eadfuelapp.herokuapp.com/api/fuel-station/exit-after-pump
+const exitTheQueue = async (req, response) => {
   const station_id = req.body.station_id;
-  const fuelType = req.body.fuel_type; // 'Diesel' or 'Petrol'
-  const amount = req.body.amount; //in letres
+  const fuelType = req.body.fuel_type; // Diesel or Petrol
+  const amount = req.body.amount; //in l
   let station;
   try {
-    //find the station from which the user has pumped fuel
+    //find user pumped station
     station = await FuelShed.findById(station_id);
 
-    //reduce the amount from respective fuel type of this station
+    //reduce the amount from fuel type of this station
     if (fuelType === "Diesel") {
       let currentAmount = station.Diesel.avaiableTotalFuelAmount;
       station.Diesel.avaiableTotalFuelAmount = currentAmount - amount;
@@ -395,7 +404,7 @@ const exitAfterFueling = async (req, response) => {
       station.Petrol.avaiableTotalFuelAmount = currentAmount - amount;
     }
 
-    //save updated station fuel details
+    //save updated station fuel dettail
     station.save().then((res) => {
       response.status(200).json({
         success: true,
@@ -409,16 +418,16 @@ const exitAfterFueling = async (req, response) => {
 };
 
 const all = {
-  getFuelStationDetails,
-  getIdByFuelStationName,
-  getDetailsOfSearchedFuelStation,
-  updateFuelStationDetails,
-  addUserToFuelQueue,
-  getFuelQueueLengths,
-  getQueueWaitingTimes,
+  getStationDetails,
+  getIdByStationName,
+  getDetailsOfSearchedStation,
+  updateStationDetails,
+  addUserToTheQueue,
+  getQueueLength,
+  getWaitingTime,
   getFuelAvailability,
-  exitUserFromFuelQueue,
-  exitAfterFueling,
+  exitUserFromQueue,
+  exitTheQueue,
 };
 
 module.exports = all;

@@ -5,6 +5,8 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 const FuelShed = require("../models/fuelShed");
 
+//method: user registeration
+//[POST]https://eadfuelapp.herokuapp.com/api/auth/register            
 exports.signup = async (req, res, next) => {
   console.log("req", req.body);
   const errors = validationResult(req);
@@ -44,7 +46,8 @@ exports.signup = async (req, res, next) => {
     next(err);
   }
 };
-
+//method: user login
+//[POST]https://eadfuelapp.herokuapp.com/api/auth/login
 exports.login = async (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
