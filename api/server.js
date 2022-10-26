@@ -1,60 +1,46 @@
 const express = require("express");
-const dotenv = require("dotenv");
-const morgan = require("morgan");
-const { notFound, errorHandler } = require("./middlewares/error.Middleware");
-const connectDB = require("./config/db");
-const colors = require("colors");
 const bodyParser = require("body-parser");
+const mongoose = require("mongoose");
 const cors = require("cors");
 
-//Import Routes
-const usermanagement = require("./controllers/user.controller");
-const orderRoutes = require("./routes/order.route");
-const districtRoutes = require("./routes/category.route");
-const shedRoutes = require("./routes/product.route");
-const shedDistRoutes = require("./controllers/prodcat.controller");
-const fuelqueRoutes = require("./controllers/shoppingCart.controller");
-const fuelSinglequeRoutes = require("./controllers/shed.que.controller");
-
-const authRoute = require("./controllers/user.controller");
-const { create, update } = require("./models/user.model");
+const authRoutes = require("./routes/auth");
+const shedOwnerAuthRoutes = require("./routes/stationAuth");
+const fuelStationRoutes = require("./routes/FuelManagement");
+require("dotenv").config();
 
 const app = express();
 
+app.use(bodyParser.json()); // application/json
 
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "OPTIONS, GET, POST, PUT, PATCH, DELETE"
+  );
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  next();
+});
 
-dotenv.config();
-app.use(bodyParser.json());
-app.use(cors());
+app.use("/api/auth", authRoutes);
 
-connectDB();
+app.use("/api/auth/shed-owner", shedOwnerAuthRoutes);
 
-//Route Middlewares
-app.use("/api/v1/user", usermanagement);
-app.use("/api/v1/order", orderRoutes);
-app.use("/api/v1/district", districtRoutes);
-app.use("/api/v1/shed/", shedRoutes);
-app.use("/api/v1/user/", authRoute);
-app.use("/api/v1/sheds/list", shedDistRoutes);
-app.use("/api/v1/fuelques/list", fuelSinglequeRoutes);
-app.use("/api/v1/fuelque", fuelqueRoutes);
+app.use("/api/fuel-station", fuelStationRoutes);
 
+app.use((error, req, res, next) => {
+  console.log(error);
+  const status = error.statusCode || 500;
+  const message = error.message;
+  const data = error.data;
+  res.status(status).json({ message: message, data: data });
+});
 
-if (process.env.NODE_ENV === "development") {
-  app.use(morgan("dev"));
-}
-
-app.use(express.json());
-
-app.use(notFound);
-app.use(errorHandler);
-
-const PORT = process.env.PORT || 4000;
-
-app.listen(
-  PORT,
-  console.log(
-    `Server running in ${process.env.NODE_ENV} mode on port ${PORT}`.blue
-      .underline.bold
-  )
-);
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then((result) => {
+    console.log("Database Conected");
+    const server = app.listen(process.env.PORT || 4000);
+    console.log(`Server running on port : ${server.address().port}`);
+  })
+  .catch((err) => console.log(err));
