@@ -5,7 +5,7 @@ const cors = require("cors");
 
 const authRoutes = require("./routes/auth");
 const shedOwnerAuthRoutes = require("./routes/station_Auth");
-const fuelStationRoutes = require("./routes/Fuel_M");
+const fuelStationRoutes = require("./routes/fuel_M");
 require("dotenv").config();
 
 const app = express();
